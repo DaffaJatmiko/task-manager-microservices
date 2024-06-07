@@ -1,0 +1,43 @@
+# project/k8s/broker-service-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-end
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front-end
+  template:
+    metadata:
+      labels:
+        app: front-end
+    spec:
+      containers:
+        - name: front-end
+          image: daffajatmiko/front-end:1.0.5
+          ports:
+            - containerPort: 8085
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '250m'
+            limits:
+              memory: '128Mi'
+              cpu: '500m'
+          env:
+            - name: BROKER_URL
+              value: 'http://broker-service.info'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-end
+spec:
+  ports:
+    - protocol: TCP
+      name: main-port
+      port: 8085
+      targetPort: 8085
+  selector:
+    app: front-end

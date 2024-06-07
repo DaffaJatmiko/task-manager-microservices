@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  mysql:
+    image: 'mysql:8.0'
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_DATABASE: 'tasks'
+    ports:
+      - '3307:3306'
+    deploy:
+      mode: replicated
+      replicas: 1
+    volumes:
+      - '/db-data/mysql/:/var/lib/mysql'
